@@ -1,0 +1,13 @@
+{
+    "at_hash": "4FNVgmQsm5m_h9VC_OFFuQ",
+    "sub": "472ff4cd-9b09-46b5-8680-e8c5d6025d38",
+    "aud": "55pb79dl8gm0i1ho9hdre91r3k",
+    "token_use": "id",
+    "auth_time": 1576816174,
+    "iss": "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_qyS1sSLiQ",
+    "pet_preference": "dogs",
+    "cognito:username": "test-user",
+    "exp": 1576819774,
+    "iat": 1576816174,
+    "email": "test-user@amazon.com"
+}

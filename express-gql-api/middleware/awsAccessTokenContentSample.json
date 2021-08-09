@@ -1,0 +1,26 @@
+{
+  "access_token_header":
+  {
+    "kid" : "1234example=",
+    "alg" : "RS256"
+  },
+
+  "access_token_payload":
+  {
+    "sub": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+    "device_key": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+    "cognito:groups": [
+      "admin"
+    ],
+    "token_use": "access",
+    "scope": "aws.cognito.signin.user.admin",
+    "auth_time": 1562190524,
+    "iss": "https://cognito-idp.us-west-2.amazonaws.com/us-west-2_example",
+    "exp": 1562194124,
+    "iat": 1562190524,
+    "origin_jti": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+    "jti": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+    "client_id": "57cbishk4j24pabc1234567890",
+    "username": "janedoe@example.com"
+  }
+}
