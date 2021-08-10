@@ -12,4 +12,6 @@ const resolvers = Object.assign({},
     subscriptions
 );
 
+// console.log(resolvers);
+
 module.exports = resolvers;

@@ -1,8 +1,8 @@
 const post = require("./models/post");
 
-const Mutation = Object.assign(
+const Mutations = Object.assign(
     {},
     post.Mutation
 );
 
-module.exports = { Mutation };
+module.exports = { Mutation: Mutations };

@@ -5,4 +5,4 @@ const Type = Object.assign(
     TimeStampUnix
 );
 
-module.exports = { Type };
+module.exports = Type;

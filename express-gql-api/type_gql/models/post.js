@@ -52,12 +52,9 @@ const typedef = gql`
         version: Int! #Public - x
 
         # Content Management
-        contributors: [UserPublic!]! #Public - x
         updatedAt: TimeStampUnix! #Public - x
         publishUpAt: TimeStampUnix #Public - x
         
-        # Joined Content
-        comments(count: Int, offset: Int, orderBy: CommentOrderByInput): [Comment!]!
     }
 
     type PostPublic implements Post {
@@ -78,12 +75,8 @@ const typedef = gql`
         version: Int! #Public - x
 
         # Content Management
-        contributors: [UserPublic!]! #Public - x
         updatedAt: TimeStampUnix! #Public - x
         publishUpAt: TimeStampUnix #Public - x
-        
-        # Joined Content
-        comments(count: Int, offset: Int, orderBy: CommentOrderByInput): [Comment!]!
     }
 
     type PostPrivate {
@@ -111,19 +104,11 @@ const typedef = gql`
         version: Int! #Public - x
 
         # Content Management
-        contributors: [UserPublic!]! #Public - x
         createdAt: TimeStampUnix! #Private - x
-        createdBy: UserPublic! #Private - x
         updatedAt: TimeStampUnix! #Public - x
-        updatedBy: UserPublic #Private - x
         publishUpAt: TimeStampUnix #Public - x
         publishDownAt: TimeStampUnix #Private - x
-        publishDownBy: UserPublic #Private - x
         checkOutAt: TimeStampUnix #Private - x
-        checkOutBy: UserPublic #Private - x
-        
-        # Joined Content
-        comments(count: Int, offset: Int, orderBy: CommentOrderByInput): [Comment!]!
     }
 `;
 

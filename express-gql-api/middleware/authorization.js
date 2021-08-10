@@ -8,7 +8,7 @@ const { cognitoHandler } = require("../helpers/cognitoDecodeVerifyJWT");
 /** Middleware: Add JWT to the request body if exists. */
 function processAccessToken(req, res, next) {
     try {
-        console.log(req['Authorization']);
+        console.log(`Process Access Token Called ${req['Authorization']}`);
         if (req['Authorization']) {
             console.log("Request received with header")
             const accessToken = cognitoHandler(req);

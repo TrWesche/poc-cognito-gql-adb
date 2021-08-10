@@ -1,8 +1,8 @@
 const post = require("./models/post");
 
-const Field = Object.assign(
+const Fields = Object.assign(
     {}, 
     post.Field, 
 );
 
-module.exports = { Field };
+module.exports = Fields;

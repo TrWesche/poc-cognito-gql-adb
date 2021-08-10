@@ -34,7 +34,7 @@ app.use(morgan('dev'));
 // app.use(cookieParser());
 // app.use(processJWT);
 
-app.use( processAccessToken() );
+app.use(processAccessToken);
 
 app.use(
   '/graphql',

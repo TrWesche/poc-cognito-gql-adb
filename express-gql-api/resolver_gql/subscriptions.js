@@ -1,8 +1,8 @@
 const post = require("./models/post");
 
-const Subscription = Object.assign(
+const Subscriptions = Object.assign(
     {}, 
     post.Subscription
 );
 
-module.exports = { Subscription };
+module.exports = { Subscription: Subscriptions };

@@ -1,19 +1,19 @@
 const resolvers = {
     // Field Resolvers
-    Field: {
-        Post: {
-            async author(parent, args, ctx, info) {
-                const { PostRepo } = ctx;
-                const result = await PostRepo.getPostAuthors(parent);
-                return result[0];
-            },
-            async comments(parent, args, ctx, info) {
-                const { PostRepo } = ctx;
-                const { count, offset, orderBy } = args;
-                return await PostRepo.getPostComments(parent, count, offset, orderBy);
-            }
-        }
-    },
+    // Field: {
+    //     Post: {
+    //         async author(parent, args, ctx, info) {
+    //             const { PostRepo } = ctx;
+    //             const result = await PostRepo.getPostAuthors(parent);
+    //             return result[0];
+    //         },
+    //         async comments(parent, args, ctx, info) {
+    //             const { PostRepo } = ctx;
+    //             const { count, offset, orderBy } = args;
+    //             return await PostRepo.getPostComments(parent, count, offset, orderBy);
+    //         }
+    //     }
+    // },
     // Query Resolvers
     Query: {
         async posts(parent, args, ctx, info) {
