@@ -36,9 +36,11 @@ const verifyPromised = promisify(jsonwebtoken.verify.bind(jsonwebtoken));
 const cognitoHandler = async (request) => {
   let result = null;
   try {
-    console.log(`user claim verify invoked for ${JSON.stringify(request)}`);
-    const token = request.token;
-    const tokenSections = (token || '').split('.');
+    const token = request.token.split(' ');
+    if (token[0] !== 'Bearer') {
+      throw new Error('invated token type')
+    }
+    const tokenSections = (token[1] || '').split('.');
     if (tokenSections.length < 2) {
       throw new Error('requested token is invalid');
     }
@@ -46,10 +48,11 @@ const cognitoHandler = async (request) => {
     const header = JSON.parse(headerJSON);
     const keys = await getPublicKeys();
     const key = keys[header.kid];
+    
     if (key === undefined) {
       throw new Error('claim made for unknown kid');
     }
-    const claim = await verifyPromised(token, key.pem);
+    const claim = await verifyPromised(token[1], key.pem);
     const currentSeconds = Math.floor( (new Date()).valueOf() / 1000);
     if (currentSeconds > claim.exp || currentSeconds < claim.auth_time) {
       throw new Error('claim is expired or invalid');
@@ -68,4 +71,4 @@ const cognitoHandler = async (request) => {
   return result;
 };
 
-module.exportsexport = { cognitoHandler };
+module.exports = { cognitoHandler };

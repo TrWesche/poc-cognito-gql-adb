@@ -1,7 +1,9 @@
+import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { CreatePost } from './graphql/post/createPost';
 import { GetPosts } from './graphql/post/getPosts';
+import { withAuthenticator, AmplifySignOut, AmplifyAuthenticator, AmplifySignIn } from '@aws-amplify/ui-react';
 
 function App() {
   return (
@@ -19,11 +21,15 @@ function App() {
         >
           Learn React
         </a>
+        <AmplifySignIn />
       </header>
       <body>
         {CreatePost()}
         {GetPosts({onPostSelected: true})}
       </body>
+      <footer>
+        <AmplifySignOut />
+      </footer>
     </div>
   );
 }

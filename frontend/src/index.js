@@ -1,14 +1,39 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ApolloClient, ApolloProvider, HttpLink, InMemoryCache } from '@apollo/client';
+import { ApolloClient, ApolloProvider, HttpLink, InMemoryCache, createHttpLink } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import Amplify from "aws-amplify/";
+import config from "./aws-exports";
+
+Amplify.configure(config);
+
+const httpLink = createHttpLink({
+  uri: "http://127.0.0.1:4000/graphql"
+});
+
+const authLink = setContext((_, { headers }) => {
+  let key = null;
+  for (let i = 0; i < localStorage.length; i++) {
+    if (localStorage.key(i).indexOf(".accessToken") !== -1) {
+      key = localStorage.key(i);
+    }
+  }
+
+  const token = localStorage.getItem(key);
+
+  return {
+    headers: {
+      ...headers,
+      Authorization: token ? `Bearer ${token}` : "",
+    }
+  }
+})
 
 const client = new ApolloClient({
-  link: new HttpLink({
-    uri: "http://127.0.0.1:4000/graphql"
-  }),
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache()
 })
 
