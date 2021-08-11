@@ -38,12 +38,12 @@ const resolvers = {
             const { rootValue } = info;
             const { query, post_key, published, count, offset } = args;
 
-            const userCheck = await AuthorizationRepo.authorizeUserAction(rootValue.user);
+            const userCheck = await AuthorizationRepo.authorizeUserAction(rootValue.accessAttributes);
             if (userCheck.length === 0) {
                 throw new Error(`User not found`);
             }
 
-            return await PostRepo.getFilteredPosts(query, rootValue.user.key, post_key, published, count, offset);
+            return await PostRepo.getFilteredPosts(query, rootValue.accessAttributes.sub, post_key, published, count, offset);
         }
     },
     // Mutation Resolvers
@@ -52,13 +52,18 @@ const resolvers = {
             const { AuthorizationRepo, PostRepo } = ctx;
             const { rootValue } = info;
             const { data } = args;
-    
-            const userCheck = await AuthorizationRepo.authorizeUserAction(rootValue.user);
-            if (userCheck.length === 0) {
-                throw new Error(`User not found`);
+
+            if (!rootValue.accessAttributes.isValid) {
+                console.log("Not authorized");
+                throw new Error(`User not authorized`);
             }
+
+            // const userCheck = await AuthorizationRepo.authorizeUserAction(rootValue.accessAttributes);
+            // if (userCheck.length === 0) {
+            //     throw new Error(`User not found`);
+            // }
     
-            const post = await PostRepo.createPost(rootValue.user, data);
+            const post = await PostRepo.createPost(rootValue.accessAttributes, data);
             return post[0];
         },
         async updatePost(parent, args, ctx, info) {
@@ -66,7 +71,7 @@ const resolvers = {
             const { rootValue } = info;
             const { post_key, data } = args;
     
-            const postCheck = await AuthorizationRepo.authorizePostAction(rootValue.user, post_key)
+            const postCheck = await AuthorizationRepo.authorizePostAction(rootValue.accessAttributes, post_key)
             if (postCheck.length === 0) {
                 throw new Error(`Unable to update post.`)
             }
@@ -79,7 +84,7 @@ const resolvers = {
             const { rootValue } = info;
             const { post_key } = args;
     
-            const postCheck = await AuthorizationRepo.authorizePostAction(rootValue.user, post_key)
+            const postCheck = await AuthorizationRepo.authorizePostAction(rootValue.accessAttributes, post_key)
             if (postCheck.length === 0) {
                 throw new Error(`Unable to delete post.`)
             }

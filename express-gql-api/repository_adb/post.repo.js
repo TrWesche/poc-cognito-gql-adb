@@ -2,23 +2,23 @@ const { db, collections } = require("../db");
 const { aql } = require("arangojs");
 
 class PostRepo {
-    // Manually Checked - OK (6/10/2021)
-    static async createPost(user_object, data) {
-        const user_id = `${collections.Users.name}/${user_object.key}`
+    static async createPost(access_object, data) {
+        const user_id = `${access_object.sub}`
         const query = aql`
             INSERT {
+                used_id: ${user_id},
                 title: ${data.title},
-                body: ${data.body},
+                contentPreview: ${data.contentPreview ? data.contentPreview : null},
+                contentFull: ${data.contentFull},
                 published: ${data.published ? data.published : false},
+                postType: ${data.postType ? data.postType : null},
+                postTopic: ${data.postTopic ? data.postTopic : null},
+                postTags: ${data.postTags ? data.postTags : []},
                 createdAt: DATE_NOW(),
                 updatedAt: DATE_NOW()
             } INTO ${collections.Posts} OPTIONS { keyOptions: { type: "padded" } }
             LET newPost = NEW
 
-            INSERT {
-                _from: ${user_id},
-                _to: newPost._id
-            } INTO ${collections.UserPosts}
             RETURN newPost
         `;
 
@@ -26,7 +26,6 @@ class PostRepo {
         return cursor.all();
     }
 
-    // Manually Checked - OK (6/10/2021)
     static async getPublicPosts(count = 10, offset = 0, orderBy) {
         const queryParams = [];
 
@@ -47,7 +46,6 @@ class PostRepo {
         return await cursor.all();
     }
 
-    // Manually Checked - OK (6/10/2021)
     static async getPostByKey(post_key) {
         const query = aql`
             FOR post IN ${collections.Posts}
@@ -60,7 +58,6 @@ class PostRepo {
         return cursor.all();
     }
 
-    // Manually Checked - OK (6/10/2021)
     static async getFilteredPosts(searchString, author_key, post_key, published, count = 10, offset = 0, orderBy) {
         const queryParams = [];
         if (searchString !== undefined) {queryParams.push(aql`FILTER LIKE(post.body, ${'%'+searchString+'%'}, true)`)};
@@ -71,19 +68,19 @@ class PostRepo {
             queryParams.push(aql`SORT post.${orderByParams[0]} ${orderByParams[1]}`);
         }
 
-        if (author_key !== undefined) {
-            const author_id = `${collections.Users.name}/${author_key}`
+        // if (author_key !== undefined) {
+        //     const author_id = `${collections.Users.name}/${author_key}`
 
-            const query = aql`
-            FOR post IN 1..1 OUTBOUND ${author_id} ${collections.UserPosts}
-                ${aql.join(queryParams)}
-                LIMIT ${offset}, ${count}
-                RETURN post
-            `;
+        //     const query = aql`
+        //     FOR post IN 1..1 OUTBOUND ${author_id} ${collections.UserPosts}
+        //         ${aql.join(queryParams)}
+        //         LIMIT ${offset}, ${count}
+        //         RETURN post
+        //     `;
 
-            const cursor = await db.query(query);
-            return cursor.all();
-        };
+        //     const cursor = await db.query(query);
+        //     return cursor.all();
+        // };
 
         const query = aql`
             FOR post IN ${collections.Posts}

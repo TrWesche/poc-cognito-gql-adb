@@ -12,8 +12,8 @@ const db = new Database({
 const collections = {
   // Document Collections
   // Users: db.collection("Users"),
-  // Posts: db.collection("Posts"),
-  Comments: db.collection("Comments"),
+  Posts: db.collection("Posts"),
+  // Comments: db.collection("Comments"),
   // Edge Collections
   // UserPosts: db.collection("UserPosts"),
   // UserComments: db.collection("UserComments"),
